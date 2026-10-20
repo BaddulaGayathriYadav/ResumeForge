@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ResumeForge</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #08090d;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand h1 {
+            font-size: 30px;
+            letter-spacing: -1px;
+        }
+
+        .brand span {
+            color: #7c5cff;
+        }
+
+        .card {
+            background: #11131a;
+            border: 1px solid #242733;
+            border-radius: 20px;
+            padding: 34px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .card h2 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9ca3b4;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .free-box {
+            background: rgba(124, 92, 255, 0.10);
+            border: 1px solid rgba(124, 92, 255, 0.30);
+            border-radius: 12px;
+            padding: 13px 15px;
+            margin-bottom: 24px;
+            color: #d9d2ff;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .free-box strong {
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #e5e7eb;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1px solid #303442;
+            background: #0b0d12;
+            color: #ffffff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input::placeholder {
+            color: #626979;
+        }
+
+        input:focus {
+            border-color: #7c5cff;
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 11px;
+            padding: 14px;
+            background: #7c5cff;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            background: #6947f5;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            margin-top: 17px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.30);
+            color: #86efac;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.30);
+            color: #fca5a5;
+        }
+
+        .links {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 14px;
+            color: #8f96a8;
+        }
+
+        .links a {
+            color: #a896ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 1px;
+            background: #242733;
+            margin: 24px 0;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            color: #8f96a8;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .home-link:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 20px 14px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .brand h1 {
+                font-size: 26px;
+            }
+
+            .card h2 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="brand">
+        <h1>Resume<span>Forge</span></h1>
+    </div>
+
+    <div class="card">
+
+        <h2>Welcome back</h2>
+
+        <p class="subtitle">
+            Log in to access your ResumeForge account and continue
+            building your resume.
+        </p>
+
+        <div class="free-box">
+            <strong>✓ Free at every level</strong><br>
+            No payment required to create or manage your resume.
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" id="loginButton">
+                Log In
+            </button>
+
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <div class="links">
+            <span>Don't have an account?</span>
+            <a href="signup.html">Create a free account</a>
+        </div>
+
+        <div class="divider"></div>
+
+        <a href="index.html" class="home-link">
+            ← Back to ResumeForge
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Supabase JavaScript library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- ResumeForge Supabase configuration -->
+<script src="supabase-config.js"></script>
+
+
+<script>
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+
+    loginForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        message.className = "message";
+        message.textContent = "";
+
+        loginButton.disabled = true;
+        loginButton.textContent = "Logging in...";
+
+        try {
+
+            const { data, error } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data.session) {
+                throw new Error(
+                    "Login was not completed. Please try again."
+                );
+            }
+
+            message.className = "message success";
+            message.textContent =
+                "Login successful! Opening your resume builder...";
+
+            setTimeout(function () {
+                window.location.href = "builder.html";
+            }, 800);
+
+        } catch (error) {
+
+            console.error("Login error:", error);
+
+            message.className = "message error";
+
+            if (
+                error.message &&
+                error.message.toLowerCase().includes("email not confirmed")
+            ) {
+                message.textContent =
+                    "Please verify your email before logging in.";
+            } else {
+                message.textContent =
+                    error.message ||
+                    "Unable to log in. Please check your email and password.";
+            }
+
+        } finally {
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Log In";
+        }
+    });
+</script>
+
+</body>
+</html>

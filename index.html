@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ResumeForge — Build a Resume That Gets Noticed</title>
+
+<meta name="description"
+content="ResumeForge helps you build a polished, recruiter-friendly resume with live preview and professional templates.">
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+:root{
+    --bg:#070910;
+    --panel:#0d101a;
+    --panel2:#111522;
+    --border:#202637;
+    --text:#f5f7ff;
+    --muted:#9299aa;
+    --purple:#8057ff;
+    --cyan:#31d8ff;
+    --green:#21e6a4;
+}
+
+body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button{
+    font:inherit;
+    cursor:pointer;
+}
+
+.container{
+    width:min(1160px,calc(100% - 40px));
+    margin:auto;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:76px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(7,9,16,.84);
+    backdrop-filter:blur(18px);
+}
+
+.nav-inner{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-weight:850;
+    font-size:19px;
+}
+
+.logo{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#8b5cf6,#28d9ff);
+    color:white;
+    font-weight:900;
+    box-shadow:0 8px 28px rgba(128,87,255,.28);
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    color:#b8bfd0;
+    font-size:14px;
+    font-weight:650;
+}
+
+.nav-links a:hover{
+    color:white;
+}
+
+.nav-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.btn{
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:white;
+    padding:11px 17px;
+    border-radius:11px;
+    font-weight:750;
+    transition:.2s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    border-color:#3c4660;
+}
+
+.btn-primary{
+    border:none;
+    background:linear-gradient(135deg,#8057ff,#5f8cff);
+    box-shadow:0 12px 30px rgba(128,87,255,.25);
+}
+
+.menu{
+    display:none;
+    background:none;
+    border:0;
+    color:white;
+    font-size:25px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    padding:105px 0 90px;
+    text-align:center;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:620px;
+    height:620px;
+    left:50%;
+    top:-260px;
+    transform:translateX(-50%);
+    background:radial-gradient(
+        circle,
+        rgba(128,87,255,.19),
+        transparent 67%
+    );
+    pointer-events:none;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 12px;
+    border:1px solid rgba(128,87,255,.35);
+    border-radius:999px;
+    background:rgba(128,87,255,.08);
+    color:#c9bbff;
+    font-size:12px;
+    font-weight:750;
+    letter-spacing:.04em;
+}
+
+.badge-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+}
+
+.hero h1{
+    position:relative;
+    max-width:900px;
+    margin:24px auto 18px;
+    font-size:clamp(45px,7vw,78px);
+    line-height:1.02;
+    letter-spacing:-.055em;
+}
+
+.gradient{
+    background:linear-gradient(
+        100deg,
+        #fff 25%,
+        #a98cff 57%,
+        #5fe5ff 90%
+    );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    max-width:680px;
+    margin:0 auto;
+    color:var(--muted);
+    font-size:17px;
+}
+
+.hero-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.hero-actions .btn{
+    padding:14px 21px;
+}
+
+.trust{
+    margin-top:26px;
+    color:#687084;
+    font-size:12px;
+}
+
+
+/* =========================
+   RESUME MOCKUP
+========================= */
+
+.mockup-wrap{
+    margin:70px auto 0;
+    max-width:950px;
+    position:relative;
+}
+
+.mockup{
+    background:#10131e;
+    border:1px solid #252c3d;
+    border-radius:18px;
+    padding:12px;
+    box-shadow:0 35px 100px rgba(0,0,0,.48);
+}
+
+.windowbar{
+    height:30px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:0 8px;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#3a4151;
+}
+
+.mock-content{
+    display:grid;
+    grid-template-columns:34% 66%;
+    min-height:450px;
+    border-radius:10px;
+    overflow:hidden;
+    background:white;
+    text-align:left;
+}
+
+.mock-side{
+    background:#10131e;
+    padding:34px;
+    color:white;
+}
+
+.mock-side .mini-brand{
+    font-size:12px;
+    color:#aab1c3;
+    font-weight:800;
+    letter-spacing:.12em;
+}
+
+.mock-side h3{
+    font-size:25px;
+    margin-top:30px;
+}
+
+.mock-side p{
+    font-size:11px;
+    color:#777f91;
+    margin-top:10px;
+}
+
+.mock-nav{
+    margin-top:35px;
+    display:grid;
+    gap:10px;
+}
+
+.mock-nav span{
+    padding:9px 10px;
+    border-radius:8px;
+    color:#9ba3b5;
+    font-size:11px;
+}
+
+.mock-nav span:first-child{
+    background:#1b1930;
+    color:white;
+}
+
+.mock-paper{
+    padding:38px 42px;
+    color:#172033;
+}
+
+.paper-name{
+    font-size:28px;
+    font-weight:850;
+}
+
+.paper-title{
+    font-size:10px;
+    color:#7651ee;
+    font-weight:800;
+    letter-spacing:.12em;
+    margin-top:5px;
+}
+
+.paper-line{
+    height:2px;
+    background:linear-gradient(90deg,#8057ff,#31d8ff);
+    margin:18px 0 22px;
+}
+
+.paper-section{
+    font-size:9px;
+    color:#7651ee;
+    letter-spacing:.2em;
+    font-weight:850;
+    margin-top:18px;
+}
+
+.paper-text{
+    height:6px;
+    background:#e4e7ed;
+    border-radius:4px;
+    margin-top:9px;
+}
+
+.paper-text.short{
+    width:72%;
+}
+
+.paper-text.mid{
+    width:88%;
+}
+
+.paper-entry{
+    margin-top:13px;
+}
+
+.paper-entry strong{
+    font-size:12px;
+}
+
+.paper-entry small{
+    display:block;
+    font-size:8px;
+    color:#8b92a2;
+    margin-top:3px;
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+    padding:100px 0;
+}
+
+.section-head{
+    text-align:center;
+    max-width:700px;
+    margin:0 auto 48px;
+}
+
+.eyebrow{
+    color:#a996ff;
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+.section-head h2{
+    font-size:clamp(32px,5vw,50px);
+    letter-spacing:-.04em;
+    line-height:1.08;
+    margin-top:10px;
+}
+
+.section-head p{
+    color:var(--muted);
+    margin-top:13px;
+}
+
+
+/* =========================
+   FEATURES
+========================= */
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.card{
+    background:linear-gradient(
+        180deg,
+        rgba(17,21,34,.92),
+        rgba(12,15,25,.92)
+    );
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:26px;
+    transition:.25s ease;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:#3a4258;
+}
+
+.icon{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:rgba(128,87,255,.12);
+    color:#bdaeff;
+    font-size:19px;
+    margin-bottom:19px;
+}
+
+.card h3{
+    font-size:17px;
+}
+
+.card p{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:8px;
+}
+
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.step{
+    position:relative;
+    padding:28px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--panel);
+}
+
+.number{
+    font-size:12px;
+    color:#a996ff;
+    font-weight:850;
+    letter-spacing:.12em;
+}
+
+.step h3{
+    margin-top:34px;
+    font-size:21px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:8px;
+}
+
+
+/* =========================
+   TEMPLATES
+========================= */
+
+.template-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.template-card{
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:14px;
+    background:var(--panel);
+    transition:.25s;
+}
+
+.template-card:hover{
+    transform:translateY(-5px);
+    border-color:#414a64;
+}
+
+.template-preview{
+    height:330px;
+    border-radius:11px;
+    background:#fff;
+    position:relative;
+    overflow:hidden;
+    padding:30px;
+    color:#172033;
+}
+
+.template-preview.minimal{
+    font-family:Georgia,serif;
+}
+
+.template-preview.executive{
+    color:#1a1a1a;
+}
+
+.tp-name{
+    height:12px;
+    width:145px;
+    background:#172033;
+    border-radius:6px;
+}
+
+.tp-title{
+    height:5px;
+    width:90px;
+    background:#8057ff;
+    margin-top:9px;
+    border-radius:4px;
+}
+
+.tp-rule{
+    height:2px;
+    background:#31d8ff;
+    margin-top:15px;
+}
+
+.tp-section{
+    height:6px;
+    width:65px;
+    background:#8057ff;
+    margin-top:24px;
+    border-radius:3px;
+}
+
+.tp-line{
+    height:5px;
+    background:#e1e5eb;
+    border-radius:3px;
+    margin-top:9px;
+}
+
+.tp-line.w80{
+    width:80%;
+}
+
+.tp-line.w65{
+    width:65%;
+}
+
+.minimal .tp-name{
+    background:#1a1a1a;
+}
+
+.minimal .tp-title,
+.minimal .tp-section{
+    background:#333;
+}
+
+.minimal .tp-rule{
+    background:#222;
+    height:1px;
+}
+
+.executive .tp-name{
+    background:#171717;
+    width:165px;
+}
+
+.executive .tp-title,
+.executive .tp-section{
+    background:#aa6e21;
+}
+
+.executive .tp-rule{
+    background:#b77a2a;
+    height:4px;
+}
+
+ .template-card{
+    position:relative;
+}
+
+.template-preview{
+    transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.template-card:hover .template-preview{
+    transform:translateY(-3px);
+    box-shadow:0 16px 35px rgba(0,0,0,.18);
+}
+
+.template-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    padding:5px 8px;
+    border-radius:999px;
+    background:rgba(255,255,255,.92);
+    color:#6f4cff;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.08em;
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+}
+
+.template-meta{
+    color:#9b86ff;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.1em;
+    margin-bottom:6px;
+}
+
+.template-action{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:13px;
+    padding:9px 13px;
+    border:1px solid #39415d;
+    border-radius:10px;
+    background:#151a29;
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    transition:transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.template-action span{
+    color:#31d8ff;
+    transition:transform .2s ease;
+}
+
+.template-action:hover{
+    transform:translateY(-2px);
+    border-color:#8057ff;
+    background:#1b2033;
+}
+
+.template-action:hover span{
+    transform:translateX(3px);
+}
+
+.template-info{
+    padding:15px 4px 5px;
+}
+
+.template-info h3{
+    font-size:17px;
+}
+
+.template-info p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:4px;
+}
+
+
+/* =========================
+   CTA
+========================= */
+
+.cta{
+    margin:20px auto 100px;
+    padding:70px 30px;
+    text-align:center;
+    border:1px solid #2d3350;
+    border-radius:25px;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(128,87,255,.18),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(49,216,255,.12),
+            transparent 35%
+        ),
+        #0d101a;
+}
+
+.cta h2{
+    font-size:clamp(32px,5vw,52px);
+    letter-spacing:-.04em;
+}
+
+.cta p{
+    max-width:600px;
+    margin:12px auto 25px;
+    color:var(--muted);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    border-top:1px solid var(--border);
+    padding:35px 0;
+    color:#777f91;
+}
+
+.footer-inner{
+    display:flex;
+    justify-content:space-between;
+    gap:25px;
+    align-items:center;
+}
+
+.footer-brand{
+    color:white;
+    font-weight:800;
+}
+
+.footer-links{
+    display:flex;
+    gap:22px;
+    font-size:13px;
+}
+
+.footer-links a:hover{
+    color:white;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:850px){
+
+    .nav-links,
+    .nav-actions{
+        display:none;
+    }
+
+    .menu{
+        display:block;
+    }
+
+    .feature-grid,
+    .steps,
+    .template-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mock-content{
+        grid-template-columns:1fr;
+    }
+
+    .mock-side{
+        display:none;
+    }
+
+    .mock-paper{
+        padding:28px;
+    }
+}
+
+@media(max-width:600px){
+
+    .container{
+        width:min(100% - 28px,1160px);
+    }
+
+    .hero{
+        padding:75px 0 60px;
+    }
+
+    .hero p{
+        font-size:15px;
+    }
+
+    .section{
+        padding:70px 0;
+    }
+
+    .template-preview{
+        height:300px;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+
+/* Readable homepage resume mockup: use real sample content, not skeleton bars */
+.paper-copy{margin:7px 0 0;color:#4c5668;font-size:10px;line-height:1.55;max-width:100%;}
+.mock-paper .paper-section{margin-top:18px;}
+.mock-paper .paper-entry{margin-top:8px;}
+.mock-paper .paper-entry strong{display:block;font-size:10px;color:#172033;}
+.mock-paper .paper-entry small{display:block;margin-top:3px;font-size:8px;color:#667085;}
+
+/* Readable resume previews instead of decorative skeleton bars */
+.template-preview{height:390px!important;padding:0!important;overflow:hidden;background:#fff!important;color:#202938!important;font-family:Arial,Helvetica,sans-serif;text-align:left}
+.resume-mini{height:100%;padding:22px 20px;overflow:hidden;font-size:7.5px;line-height:1.35;color:#303847}
+.resume-mini h4{font-size:16px;line-height:1.1;margin:0 0 3px;color:#172033;letter-spacing:-.3px}
+.resume-mini .mini-role{font-size:8px;font-weight:700;color:var(--mini-accent,#7651ee);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.resume-mini .mini-contact{font-size:6.5px;color:#687386;border-bottom:1px solid #d7dce5;padding-bottom:8px;margin-bottom:8px}
+.resume-mini h5{font-size:7px;text-transform:uppercase;letter-spacing:.8px;margin:9px 0 3px;color:var(--mini-accent,#7651ee);border-bottom:1px solid #dfe3ea;padding-bottom:2px}
+.resume-mini p{font-size:7px;line-height:1.4;margin:2px 0 4px;color:#465164}
+.resume-mini .mini-job{font-size:7.5px;font-weight:700;margin-top:4px;color:#1d2738}
+.resume-mini .mini-date{float:right;font-size:6px;font-weight:400;color:#737d8e}
+.resume-mini ul{margin:2px 0 0 11px;padding:0}.resume-mini li{font-size:6.7px;margin:1px 0;color:#465164}
+.resume-mini .mini-skills{font-size:6.8px;line-height:1.65}.resume-mini.minimal{font-family:Georgia,serif;--mini-accent:#333}.resume-mini.minimal h4{font-family:Georgia,serif;font-weight:500}.resume-mini.executive{--mini-accent:#a36a20}.resume-mini.executive h4{letter-spacing:.6px}
+@media(max-width:600px){.template-preview{height:360px!important}}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="navbar">
+
+    <div class="container nav-inner">
+
+        <a class="brand" href="index.html">
+            <span class="logo">R</span>
+            <span>ResumeForge</span>
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how">
+                How it works
+            </a>
+
+            <a href="#templates">
+                Templates
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a class="btn" href="templates.html">
+                Explore templates
+            </a>
+
+            <a class="btn btn-primary" href="builder.html">
+                Build my resume
+            </a>
+
+            <!-- NEW -->
+            <a class="btn" href="assistant.html">
+                Resume Assistant
+            </a>
+
+        </div>
+
+
+        <button
+            class="menu"
+            onclick="toggleMenu()"
+            aria-label="Open menu">
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MOBILE MENU
+========================= -->
+
+<div
+    id="mobileMenu"
+    style="
+        display:none;
+        background:#0d101a;
+        border-bottom:1px solid #202637;
+    "
+>
+
+    <div
+        class="container"
+        style="
+            padding:18px 0;
+            display:grid;
+            gap:14px;
+        "
+    >
+
+        <a href="#features" onclick="closeMenu()">
+            Features
+        </a>
+
+        <a href="#how" onclick="closeMenu()">
+            How it works
+        </a>
+
+        <a href="#templates" onclick="closeMenu()">
+            Templates
+        </a>
+
+        <a href="templates.html">
+            Explore templates
+        </a>
+
+        <a class="btn btn-primary" href="builder.html">
+            Build my resume
+        </a>
+
+        <!-- NEW -->
+        <a class="btn" href="assistant.html">
+            ✨ Resume Assistant
+        </a>
+
+    </div>
+
+</div>
+
+
+<main>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <span class="badge">
+
+            <span class="badge-dot"></span>
+
+            BUILT FOR MODERN JOB SEEKERS
+
+        </span>
+
+
+        <h1>
+
+            Turn your experience into a resume that
+
+            <span class="gradient">
+                gets noticed.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Build a clean, professional resume without wrestling
+            with complicated layouts. Write your story, choose your
+            style, see it live, and export when you're ready.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+            <a
+                class="btn btn-primary"
+                href="builder.html"
+            >
+                Start building — it's free
+            </a>
+
+
+            <a
+                class="btn"
+                href="#how"
+            >
+                See how it works
+            </a>
+
+        </div>
+
+
+        <div class="trust">
+
+            No account required · Live preview · Professional templates
+
+        </div>
+
+
+        <!-- RESUME MOCKUP -->
+
+        <div class="mockup-wrap">
+
+            <div class="mockup">
+
+                <div class="windowbar">
+
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+
+                </div>
+
+
+                <div class="mock-content">
+
+
+                    <div class="mock-side">
+
+                        <div class="mini-brand">
+                            RESUMEFORGE
+                        </div>
+
+                        <h3>
+                            Your story.
+                        </h3>
+
+                        <p>
+                            Build a resume around what makes you valuable.
+                        </p>
+
+
+                        <div class="mock-nav">
+
+                            <span>
+                                ◉ Personal
+                            </span>
+
+                            <span>
+                                ≡ Summary
+                            </span>
+
+                            <span>
+                                □ Experience
+                            </span>
+
+                            <span>
+                                ◇ Education
+                            </span>
+
+                            <span>
+                                ✦ Skills
+                            </span>
+
+                            <span>
+                                ◈ Projects
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mock-paper">
+
+                        <div class="paper-name">
+                            Emily Carter
+                        </div>
+
+                        <div class="paper-title">
+                            SOFTWARE ENGINEER
+                        </div>
+
+                        <div class="paper-line"></div>
+
+
+                        <div class="paper-section">
+                            PROFILE
+                        </div>
+
+                        <p class="paper-copy">Software engineer experienced in building reliable web applications, improving performance, and collaborating across product teams.</p>
+
+
+                        <div class="paper-section">
+                            EXPERIENCE
+                        </div>
+
+                        <div class="paper-entry">
+
+                            <strong>
+                                AI &amp; ML Intern
+                            </strong>
+
+                            <small>
+                                NovaTech Labs · 2025 — 2026
+                            </small>
+
+                        </div>
+
+                        <p class="paper-copy">Built reusable React components and REST API integrations. Improved page performance by 28% and documented release workflows.</p>
+
+
+                        <div class="paper-section">
+                            EDUCATION
+                        </div>
+
+                        <div class="paper-entry">
+
+                            <strong>
+                                BSc Computer Science
+                            </strong>
+
+                            <small>
+                                University of London
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section class="section" id="features">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="eyebrow">
+                WHY RESUMEFORGE
+            </div>
+
+            <h2>
+                Everything you need. Nothing you don't.
+            </h2>
+
+            <p>
+                A focused resume-building experience designed
+                around the actual work of creating a strong application.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <article class="card">
+
+                <div class="icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Live resume preview
+                </h3>
+
+                <p>
+                    Every change appears instantly, so you can see
+                    exactly how your final resume will look.
+                </p>
+
+            </article>
+
+
+            <article class="card">
+
+                <div class="icon">
+                    ◈
+                </div>
+
+                <h3>
+                    Professional layouts
+                </h3>
+
+                <p>
+                    Choose a visual style that fits your career
+                    without rebuilding your information from scratch.
+                </p>
+
+            </article>
+
+
+            <article class="card">
+
+                <div class="icon">
+                    ↗
+                </div>
+
+                <h3>
+                    Ready to export
+                </h3>
+
+                <p>
+                    Finish your resume and move directly to a
+                    clean, print-friendly version for applications.
+                </p>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="section" id="how">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="eyebrow">
+                HOW IT WORKS
+            </div>
+
+            <h2>
+                From blank page to ready-to-send.
+            </h2>
+
+            <p>
+                You focus on your experience.
+                ResumeForge handles the presentation.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <article class="step">
+
+                <div class="number">
+                    01 — YOUR STORY
+                </div>
+
+                <h3>
+                    Add your details
+                </h3>
+
+                <p>
+                    Enter your profile, experience, education,
+                    skills and projects in one guided builder.
+                </p>
+
+            </article>
+
+
+            <article class="step">
+
+                <div class="number">
+                    02 — YOUR STYLE
+                </div>
+
+                <h3>
+                    Choose a design
+                </h3>
+
+                <p>
+                    Switch between professional layouts while
+                    keeping the same resume information.
+                </p>
+
+            </article>
+
+
+            <article class="step">
+
+                <div class="number">
+                    03 — YOUR APPLICATION
+                </div>
+
+                <h3>
+                    Preview &amp; export
+                </h3>
+
+                <p>
+                    Review the finished resume and export it
+                    when it is ready to leave the builder.
+                </p>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     TEMPLATES
+========================= -->
+
+<section class="section" id="templates">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="eyebrow">
+                DESIGN SYSTEM
+            </div>
+
+            <h2>
+                Choose a style that gets you noticed.
+            </h2>
+
+            <p>
+                Explore polished resume designs built for different careers,
+                personalities and professional goals.
+            </p>
+
+        </div>
+
+
+        <div class="template-grid">
+
+            <!-- MODERN -->
+            <article class="template-card">
+                <div class="template-preview"><div class="resume-mini" style="--mini-accent:#6754e8"><h4>Emily Carter</h4><div class="mini-role">Software Engineer</div><div class="mini-contact">Austin, TX · emily.carter@email.com · linkedin.com/in/emilycarter</div><h5>Professional Summary</h5><p>Software engineer with 4 years of experience building responsive web applications, scalable APIs, and reliable cloud services.</p><h5>Experience</h5><div class="mini-job">Software Engineer <span class="mini-date">2023–Present</span></div><p>Northstar Digital · Austin, TX</p><ul><li>Built React interfaces used by 12,000+ monthly customers.</li><li>Reduced API response time by 32% through query optimization.</li><li>Partnered with design and QA to deliver accessible releases.</li></ul><div class="mini-job">Developer Intern <span class="mini-date">2022–2023</span></div><p>BrightLabs</p><ul><li>Created reusable UI components and automated tests.</li></ul><h5>Education</h5><div class="mini-job">B.S. Computer Science</div><p>University of Texas · 2022</p><h5>Technical Skills</h5><p class="mini-skills">JavaScript · Python · React · Node.js · REST APIs · SQL · Git · AWS</p></div></div>
+                <div class="template-info">
+                    <div class="template-meta">BEST FOR TECHNOLOGY</div>
+                    <h3>Modern</h3>
+                    <p>Energetic and polished for technology, design and contemporary careers.</p>
+                    <a class="template-action" href="templates.html">View Modern template <span>→</span></a>
+                </div>
+            </article>
+
+            <!-- MINIMAL -->
+            <article class="template-card">
+                <div class="template-preview"><div class="resume-mini minimal"><h4>JORDAN LEE</h4><div class="mini-role">Project Coordinator</div><div class="mini-contact">jordan.lee@email.com · Chicago, IL · 312-555-0148 · linkedin.com/in/jordanlee</div><h5>Profile</h5><p>Organized project coordinator experienced in schedules, stakeholder communication, documentation, and cross-functional delivery.</p><h5>Professional Experience</h5><div class="mini-job">Project Coordinator <span class="mini-date">2022–Present</span></div><p>Oak &amp; Stone Consulting</p><ul><li>Coordinate timelines and weekly status reports across six project teams.</li><li>Track risks, action items, budgets, and project documentation.</li><li>Improved on-time task completion from 82% to 94%.</li></ul><div class="mini-job">Administrative Assistant <span class="mini-date">2020–2022</span></div><p>Westbridge Services</p><ul><li>Managed calendars, meeting notes, and client communications.</li><li>Standardized shared documents to reduce duplicate work.</li></ul><h5>Education</h5><div class="mini-job">B.A. Business Administration</div><p>DePaul University · 2020</p><h5>Core Skills</h5><p class="mini-skills">Project coordination · Reporting · Excel · Risk tracking · Communication · Scheduling</p></div></div>
+                <div class="template-info">
+                    <div class="template-meta">BEST FOR SIMPLE CVs</div>
+                    <h3>Minimal</h3>
+                    <p>Quiet, elegant and distraction-free when the content should lead.</p>
+                    <a class="template-action" href="templates.html">View Minimal template <span>→</span></a>
+                </div>
+            </article>
+
+            <!-- EXECUTIVE -->
+            <article class="template-card">
+                <div class="template-preview"><div class="resume-mini executive"><h4>MICHAEL ANDERSON</h4><div class="mini-role">Operations &amp; Strategy Leader</div><div class="mini-contact">New York, NY · michael.anderson@email.com · 212-555-0192 · linkedin.com/in/michaelanderson</div><h5>Executive Profile</h5><p>Operations leader with 12 years of experience improving service delivery, developing teams, and translating business goals into measurable results.</p><h5>Leadership Experience</h5><div class="mini-job">Director of Operations <span class="mini-date">2020–Present</span></div><p>Meridian Group · New York, NY</p><ul><li>Lead a 24-person operations team across three business units.</li><li>Reduced operating costs by 18% while maintaining service targets.</li><li>Introduced KPI dashboards used in monthly executive reviews.</li></ul><div class="mini-job">Senior Operations Manager <span class="mini-date">2015–2020</span></div><p>Summit Partners</p><ul><li>Redesigned workflows and shortened turnaround time by 27%.</li><li>Managed vendor relationships and annual planning activities.</li></ul><h5>Education</h5><div class="mini-job">MBA, Management</div><p>Columbia Business School</p><h5>Core Competencies</h5><p class="mini-skills">Strategic planning · Team leadership · Budget ownership · Process improvement · KPI reporting · Change management</p></div></div>
+                <div class="template-info">
+                    <div class="template-meta">BEST FOR CORPORATE</div>
+                    <h3>Executive</h3>
+                    <p>Refined and authoritative for corporate and leadership-focused applications.</p>
+                    <a class="template-action" href="templates.html">View Executive template <span>→</span></a>
+                </div>
+            </article>
+
+        </div>
+
+
+        <div style="text-align:center;margin-top:28px;">
+
+            <a
+                class="btn"
+                href="templates.html"
+            >
+                View all template options →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="container">
+
+    <div class="cta">
+
+        <div class="eyebrow">
+            READY WHEN YOU ARE
+        </div>
+
+        <h2>
+            Build something worth sending.
+        </h2>
+
+        <p>
+            Start with a blank page, shape your story,
+            and leave with a resume you're proud to submit.
+        </p>
+
+        <!-- KEEP ONLY THIS BUTTON -->
+        <a
+            class="btn btn-primary"
+            href="builder.html"
+        >
+            Build my resume →
+        </a>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container footer-inner">
+
+
+        <div>
+
+            <div class="footer-brand">
+                ResumeForge
+            </div>
+
+            <div
+                style="font-size:12px;margin-top:4px;"
+            >
+                Build your career story with clarity.
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how">
+                How it works
+            </a>
+
+            <a href="templates.html">
+                Templates
+            </a>
+
+            <a href="builder.html">
+                Builder
+            </a>
+
+            <!-- NEW -->
+            <a href="assistant.html">
+                Assistant
+            </a>
+
+        </div>
+
+
+        <div style="font-size:12px;">
+            © 2026 ResumeForge
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+function toggleMenu(){
+
+    const menu =
+        document.getElementById("mobileMenu");
+
+    menu.style.display =
+        menu.style.display === "block"
+            ? "none"
+            : "block";
+}
+
+
+function closeMenu(){
+
+    document.getElementById("mobileMenu")
+        .style.display = "none";
+}
+
+</script>
+
+
+</body>
+</html>

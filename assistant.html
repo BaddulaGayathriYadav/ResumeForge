@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Assistant — ResumeForge</title>
+<meta name="description" content="Improve your resume summary, experience bullets and job-match keywords with ResumeForge Assistant.">
+
+<style>
+    :root{
+        --bg:#070a12;
+        --panel:#0d111c;
+        --panel-2:#111624;
+        --panel-3:#151b2a;
+        --border:#222a3c;
+        --border-light:#2c354a;
+        --text:#f4f7fb;
+        --muted:#929caf;
+        --soft:#c5ccda;
+        --accent:#8b7cff;
+        --accent-2:#b39cff;
+        --success:#68d9a4;
+        --warning:#f2c86b;
+        --shadow:0 24px 70px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+        margin:0;
+        background:
+            radial-gradient(circle at 15% 0%, rgba(139,124,255,.14), transparent 28%),
+            radial-gradient(circle at 90% 15%, rgba(99,102,241,.10), transparent 25%),
+            var(--bg);
+        color:var(--text);
+        font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+        min-height:100vh;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input,textarea{font:inherit}
+
+    .container{
+        width:min(1180px,calc(100% - 40px));
+        margin:0 auto;
+    }
+
+    /* NAV */
+    .navbar{
+        position:sticky;
+        top:0;
+        z-index:20;
+        background:rgba(7,10,18,.84);
+        backdrop-filter:blur(18px);
+        border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .nav-inner{
+        min-height:70px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:20px;
+    }
+
+    .brand{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        font-size:15px;
+        font-weight:850;
+        letter-spacing:-.02em;
+    }
+
+    .logo{
+        width:34px;
+        height:34px;
+        border-radius:10px;
+        display:grid;
+        place-items:center;
+        font-weight:900;
+        background:linear-gradient(135deg,#8b7cff,#6658df);
+        box-shadow:0 10px 28px rgba(139,124,255,.25);
+    }
+
+    .nav-links{
+        display:flex;
+        align-items:center;
+        gap:25px;
+        color:#9fa8bb;
+        font-size:12px;
+        font-weight:700;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{color:white}
+
+    .nav-actions{
+        display:flex;
+        align-items:center;
+        gap:9px;
+    }
+
+    .btn{
+        border:1px solid var(--border-light);
+        background:#0f1420;
+        color:#e8ecf5;
+        border-radius:10px;
+        padding:10px 14px;
+        font-size:12px;
+        font-weight:800;
+        cursor:pointer;
+        transition:.2s ease;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:7px;
+    }
+
+    .btn:hover{
+        transform:translateY(-1px);
+        border-color:#3a4560;
+        background:#151b2a;
+    }
+
+    .btn-primary{
+        border-color:transparent;
+        background:linear-gradient(135deg,#8b7cff,#6c5ce7);
+        color:white;
+        box-shadow:0 10px 26px rgba(112,94,231,.2);
+    }
+
+    .btn-primary:hover{
+        background:linear-gradient(135deg,#998cff,#7567ed);
+    }
+
+    .menu{display:none}
+
+    /* HERO */
+    .hero{
+        padding:72px 0 42px;
+        text-align:center;
+    }
+
+    .eyebrow{
+        color:#a99fff;
+        font-size:10px;
+        font-weight:900;
+        letter-spacing:.16em;
+        text-transform:uppercase;
+        margin-bottom:15px;
+    }
+
+    .hero h1{
+        max-width:760px;
+        margin:0 auto;
+        font-size:clamp(34px,5vw,58px);
+        line-height:1.02;
+        letter-spacing:-.055em;
+    }
+
+    .gradient{
+        background:linear-gradient(90deg,#a89cff,#e2dcff);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+    }
+
+    .hero p{
+        max-width:650px;
+        margin:18px auto 0;
+        color:#9da6b8;
+        font-size:14px;
+        line-height:1.75;
+    }
+
+    .hero-pills{
+        display:flex;
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:8px;
+        margin-top:24px;
+    }
+
+    .pill{
+        border:1px solid var(--border);
+        background:rgba(15,20,32,.7);
+        color:#aeb7c8;
+        border-radius:999px;
+        padding:7px 11px;
+        font-size:10px;
+        font-weight:750;
+    }
+
+    /* WORKSPACE */
+    .workspace{
+        padding:24px 0 70px;
+    }
+
+    .assistant-shell{
+        display:grid;
+        grid-template-columns:390px minmax(0,1fr);
+        gap:18px;
+        align-items:start;
+    }
+
+    .card{
+        background:linear-gradient(180deg,rgba(16,21,33,.96),rgba(11,15,25,.96));
+        border:1px solid var(--border);
+        border-radius:20px;
+        box-shadow:var(--shadow);
+    }
+
+    .input-card{
+        padding:20px;
+        position:sticky;
+        top:90px;
+    }
+
+    .card-heading{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:12px;
+        margin-bottom:18px;
+    }
+
+    .card-heading h2{
+        margin:0;
+        font-size:17px;
+        letter-spacing:-.025em;
+    }
+
+    .card-heading p{
+        margin:5px 0 0;
+        color:#7f899d;
+        font-size:11px;
+        line-height:1.5;
+    }
+
+    .saved-badge{
+        display:none;
+        white-space:nowrap;
+        color:#79e1ad;
+        border:1px solid rgba(104,217,164,.2);
+        background:rgba(104,217,164,.07);
+        border-radius:999px;
+        padding:6px 8px;
+        font-size:9px;
+        font-weight:850;
+    }
+
+    .saved-badge.show{display:block}
+
+    .tool-tabs{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:7px;
+        margin-bottom:17px;
+    }
+
+    .tool-tab{
+        border:1px solid var(--border);
+        background:#0c111b;
+        color:#8993a7;
+        border-radius:11px;
+        padding:11px 10px;
+        text-align:left;
+        cursor:pointer;
+        transition:.2s ease;
+    }
+
+    .tool-tab strong{
+        display:block;
+        color:inherit;
+        font-size:11px;
+        margin-bottom:3px;
+    }
+
+    .tool-tab span{
+        display:block;
+        font-size:9px;
+        line-height:1.35;
+    }
+
+    .tool-tab:hover{
+        border-color:#39445c;
+        color:#dbe0ea;
+    }
+
+    .tool-tab.active{
+        background:rgba(139,124,255,.11);
+        border-color:rgba(139,124,255,.5);
+        color:#ddd8ff;
+    }
+
+    .field{
+        margin-bottom:14px;
+    }
+
+    .field label{
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        color:#d5dbe6;
+        font-size:10px;
+        font-weight:850;
+        margin-bottom:7px;
+    }
+
+    .field label span{
+        color:#687287;
+        font-weight:650;
+    }
+
+    textarea{
+        width:100%;
+        resize:vertical;
+        min-height:150px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        outline:none;
+        background:#090e17;
+        color:#e9edf5;
+        padding:12px 13px;
+        line-height:1.55;
+        font-size:12px;
+        transition:.2s ease;
+    }
+
+    textarea:focus{
+        border-color:rgba(139,124,255,.7);
+        box-shadow:0 0 0 3px rgba(139,124,255,.09);
+    }
+
+    #jobDescription{min-height:112px}
+
+    .input-actions{
+        display:grid;
+        grid-template-columns:1fr auto;
+        gap:8px;
+        margin-top:7px;
+    }
+
+    .generate{
+        min-height:44px;
+        font-size:12px;
+    }
+
+    .secondary-btn{
+        min-height:44px;
+    }
+
+    .tip-box{
+        margin-top:15px;
+        padding:12px;
+        border:1px solid #20293b;
+        border-radius:12px;
+        background:#0a0f18;
+    }
+
+    .tip-title{
+        font-size:9px;
+        color:#a99fff;
+        font-weight:900;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+        margin-bottom:6px;
+    }
+
+    .tip-box p{
+        margin:0;
+        color:#778297;
+        font-size:10px;
+        line-height:1.55;
+    }
+
+    /* OUTPUT */
+    .output-card{
+        min-height:650px;
+        overflow:hidden;
+    }
+
+    .output-head{
+        padding:20px 22px;
+        border-bottom:1px solid var(--border);
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:15px;
+    }
+
+    .output-head h2{
+        margin:0;
+        font-size:17px;
+        letter-spacing:-.025em;
+    }
+
+    .output-head p{
+        margin:5px 0 0;
+        color:#778195;
+        font-size:10px;
+    }
+
+    .output-actions{
+        display:flex;
+        gap:7px;
+    }
+
+    .score{
+        display:flex;
+        align-items:center;
+        gap:9px;
+        border:1px solid var(--border);
+        border-radius:11px;
+        padding:7px 10px;
+        background:#0b101a;
+    }
+
+    .score-ring{
+        width:30px;
+        height:30px;
+        border-radius:50%;
+        display:grid;
+        place-items:center;
+        background:conic-gradient(#8b7cff 0deg,#8b7cff 0deg,#252d3e 0deg);
+        position:relative;
+    }
+
+    .score-ring::after{
+        content:"";
+        position:absolute;
+        inset:4px;
+        background:#0b101a;
+        border-radius:50%;
+    }
+
+    .score-ring span{
+        position:relative;
+        z-index:1;
+        font-size:8px;
+        font-weight:900;
+    }
+
+    .score-copy{
+        font-size:9px;
+        color:#7d8799;
+        line-height:1.2;
+    }
+
+    .score-copy strong{
+        display:block;
+        color:#dce1eb;
+        font-size:10px;
+        margin-bottom:2px;
+    }
+
+    .output-body{
+        padding:22px;
+    }
+
+    .empty-state{
+        min-height:540px;
+        display:grid;
+        place-items:center;
+        text-align:center;
+        padding:35px;
+    }
+
+    .empty-icon{
+        width:58px;
+        height:58px;
+        margin:0 auto 15px;
+        border:1px solid rgba(139,124,255,.28);
+        background:rgba(139,124,255,.08);
+        border-radius:16px;
+        display:grid;
+        place-items:center;
+        color:#b5adff;
+        font-size:22px;
+    }
+
+    .empty-state h3{
+        margin:0;
+        font-size:17px;
+    }
+
+    .empty-state p{
+        max-width:430px;
+        margin:9px auto 0;
+        color:#7d8799;
+        font-size:11px;
+        line-height:1.6;
+    }
+
+    .result{display:none}
+    .result.show{display:block}
+
+    .result-label{
+        color:#8e98ab;
+        font-size:9px;
+        font-weight:900;
+        letter-spacing:.12em;
+        text-transform:uppercase;
+        margin-bottom:8px;
+    }
+
+    .result-box{
+        border:1px solid var(--border);
+        background:#090e17;
+        border-radius:14px;
+        padding:17px;
+        position:relative;
+    }
+
+    .result-text{
+        margin:0;
+        color:#e5e9f1;
+        font-size:13px;
+        line-height:1.7;
+        white-space:pre-wrap;
+    }
+
+    .copy-result{
+        position:absolute;
+        top:10px;
+        right:10px;
+        padding:7px 9px;
+        font-size:9px;
+    }
+
+    .result-meta{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+        margin-top:14px;
+    }
+
+    .mini-card{
+        border:1px solid var(--border);
+        border-radius:12px;
+        padding:12px;
+        background:#0b1019;
+    }
+
+    .mini-card-title{
+        color:#6f7a8f;
+        font-size:9px;
+        font-weight:850;
+        text-transform:uppercase;
+        letter-spacing:.08em;
+        margin-bottom:8px;
+    }
+
+    .keyword-list{
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+    }
+
+    .keyword{
+        border-radius:999px;
+        padding:5px 8px;
+        background:rgba(139,124,255,.09);
+        border:1px solid rgba(139,124,255,.18);
+        color:#bdb6ff;
+        font-size:9px;
+        font-weight:750;
+    }
+
+    .tip-list{
+        margin:0;
+        padding-left:16px;
+        color:#9ba4b5;
+        font-size:10px;
+        line-height:1.65;
+    }
+
+    .tip-list li+li{margin-top:4px}
+
+    .disclaimer{
+        margin-top:18px;
+        color:#606b80;
+        font-size:9px;
+        line-height:1.55;
+    }
+
+    /* FOOTER */
+    footer{
+        border-top:1px solid var(--border);
+        padding:25px 0;
+    }
+
+    .footer-inner{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:18px;
+        color:#687287;
+        font-size:10px;
+    }
+
+    .footer-brand{
+        color:#e5e9f1;
+        font-size:12px;
+        font-weight:850;
+    }
+
+    .footer-links{
+        display:flex;
+        gap:15px;
+        flex-wrap:wrap;
+    }
+
+    .footer-links a:hover{color:white}
+
+    /* MOBILE */
+    @media(max-width:900px){
+        .nav-links{display:none}
+        .menu{
+            display:inline-flex;
+            border:1px solid var(--border);
+            background:#0f1420;
+            color:white;
+            width:40px;
+            height:40px;
+            border-radius:10px;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+        }
+
+        .nav-actions .btn:first-child{display:none}
+
+        .assistant-shell{
+            grid-template-columns:1fr;
+        }
+
+        .input-card{
+            position:static;
+        }
+
+        .output-card{
+            min-height:0;
+        }
+
+        .empty-state{min-height:360px}
+    }
+
+    @media(max-width:620px){
+        .container{width:min(100% - 24px,1180px)}
+        .hero{padding:50px 0 25px}
+        .hero h1{font-size:37px}
+        .hero p{font-size:12px}
+        .tool-tabs{grid-template-columns:1fr}
+        .output-head{
+            align-items:flex-start;
+            flex-direction:column;
+        }
+        .output-actions{width:100%}
+        .score{margin-left:auto}
+        .result-meta{grid-template-columns:1fr}
+        .footer-inner{
+            align-items:flex-start;
+            flex-direction:column;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="container nav-inner">
+        <a class="brand" href="index.html" aria-label="ResumeForge home">
+            <span class="logo">R</span>
+            <span>ResumeForge</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="templates.html">Templates</a>
+            <a href="builder.html">Builder</a>
+            <a href="assistant.html" class="active">Assistant</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a class="btn" href="templates.html">Browse templates</a>
+            <a class="btn btn-primary" href="builder.html">Open Builder →</a>
+            <button class="menu" id="menuBtn" type="button" aria-label="Open menu">☰</button>
+        </div>
+    </div>
+
+    <div id="mobileMenu" style="display:none;">
+        <div class="container" style="padding:15px 0 18px;display:grid;gap:8px;">
+            <a class="btn" href="index.html">Home</a>
+            <a class="btn" href="templates.html">Templates</a>
+            <a class="btn" href="builder.html">Builder</a>
+            <a class="btn btn-primary" href="assistant.html">Resume Assistant</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">RESUMEFORGE ASSISTANT</div>
+
+            <h1>
+                Make your resume sound
+                <span class="gradient">as strong as your work.</span>
+            </h1>
+
+            <p>
+                Improve your professional summary, turn rough experience notes into
+                stronger bullets, polish project descriptions, and spot keywords from
+                a job description.
+            </p>
+
+            <div class="hero-pills">
+                <span class="pill">✦ Clearer writing</span>
+                <span class="pill">✓ ATS keyword check</span>
+                <span class="pill">↗ Action-focused bullets</span>
+                <span class="pill">⚡ Fast feedback</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="workspace">
+        <div class="container">
+            <div class="assistant-shell">
+
+                <aside class="card input-card">
+                    <div class="card-heading">
+                        <div>
+                            <h2>What do you want to improve?</h2>
+                            <p>Choose a writing tool and paste your content.</p>
+                        </div>
+                        <span class="saved-badge" id="savedBadge">Resume loaded</span>
+                    </div>
+
+                    <div class="tool-tabs" role="tablist">
+                        <button class="tool-tab active" data-tool="summary" type="button">
+                            <strong>Professional summary</strong>
+                            <span>Make your introduction sharper.</span>
+                        </button>
+
+                        <button class="tool-tab" data-tool="experience" type="button">
+                            <strong>Experience bullet</strong>
+                            <span>Turn tasks into achievements.</span>
+                        </button>
+
+                        <button class="tool-tab" data-tool="project" type="button">
+                            <strong>Project description</strong>
+                            <span>Show impact and technical value.</span>
+                        </button>
+
+                        <button class="tool-tab" data-tool="keywords" type="button">
+                            <strong>Job match</strong>
+                            <span>Find useful job-description keywords.</span>
+                        </button>
+                    </div>
+
+                    <div class="field">
+                        <label for="content">
+                            Your content
+                            <span id="contentCount">0 characters</span>
+                        </label>
+                        <textarea id="content" placeholder="Paste your current summary here..."></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="jobDescription">
+                            Job description
+                            <span>Optional</span>
+                        </label>
+                        <textarea id="jobDescription" placeholder="Paste the job description here to find matching keywords..."></textarea>
+                    </div>
+
+                    <div class="input-actions">
+                        <button class="btn btn-primary generate" id="generateBtn" type="button">
+                            ✦ Improve my content
+                        </button>
+                        <button class="btn secondary-btn" id="loadResumeBtn" type="button">
+                            Load resume
+                        </button>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-title">Quick tip</div>
+                        <p id="quickTip">
+                            Strong summaries usually explain who you are, what you do well,
+                            and the value you can bring to the role.
+                        </p>
+                    </div>
+                </aside>
+
+                <section class="card output-card">
+                    <div class="output-head">
+                        <div>
+                            <h2>Assistant feedback</h2>
+                            <p id="outputSubtitle">Your improved version will appear here.</p>
+                        </div>
+
+                        <div class="output-actions">
+                            <div class="score" aria-label="Resume writing score">
+                                <div class="score-ring" id="scoreRing">
+                                    <span id="scoreValue">—</span>
+                                </div>
+                                <div class="score-copy">
+                                    <strong id="scoreLabel">Ready</strong>
+                                    Writing score
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="output-body">
+
+                        <div class="empty-state" id="emptyState">
+                            <div>
+                                <div class="empty-icon">✦</div>
+                                <h3>Let's strengthen your story.</h3>
+                                <p>
+                                    Paste your content on the left and click
+                                    <strong>Improve my content</strong>. ResumeForge will
+                                    give you a cleaner version plus practical suggestions.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="result" id="result">
+                            <div class="result-label" id="resultLabel">Improved version</div>
+
+                            <div class="result-box">
+                                <p class="result-text" id="resultText"></p>
+                                <button class="btn copy-result" id="copyBtn" type="button">Copy</button>
+                            </div>
+
+                            <div class="result-meta">
+                                <div class="mini-card">
+                                    <div class="mini-card-title">Detected keywords</div>
+                                    <div class="keyword-list" id="keywordList"></div>
+                                </div>
+
+                                <div class="mini-card">
+                                    <div class="mini-card-title">What to improve next</div>
+                                    <ul class="tip-list" id="tipList"></ul>
+                                </div>
+                            </div>
+
+                            <p class="disclaimer">
+                                ResumeForge Assistant improves wording from the information you provide.
+                                It does not invent achievements, numbers, employers or qualifications.
+                                Always review the final version before submitting an application.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-inner">
+        <div>
+            <div class="footer-brand">ResumeForge</div>
+            <div style="margin-top:3px;">Build a resume you're proud to send.</div>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="templates.html">Templates</a>
+            <a href="builder.html">Builder</a>
+            <a href="assistant.html">Assistant</a>
+        </div>
+
+        <div>© 2026 ResumeForge</div>
+    </div>
+</footer>
+
+<script src="assistant.js"></script>
+</body>
+</html>
